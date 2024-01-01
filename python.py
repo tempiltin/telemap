@@ -1,33 +1,50 @@
 import os
+import random
 import datetime
-import subprocess
 
-# Sana oralig‘i
-start_date = datetime.date(2025, 1, 1)
-end_date = datetime.date(2025, 3, 31)
+if not os.path.exists("pascal"):
+    os.makedirs("pascal")
 
-# Har kun uchun commit va push
-current_date = start_date
-while current_date <= end_date:
-    # Fayl yaratamiz (har xil nom bilan)
-    filename = f"daily_commit_{current_date}.txt"
-    with open(filename, "w") as f:
-        f.write(f"Commit for {current_date}")
+CODE_TEMPLATES = [
+    "program HelloWorld; begin writeln('Hello, World!'); end.",
+    "program SumTwoNumbers; var a, b: integer; begin a := 5; b := 10; writeln(a + b); end.",
+    "program PrintNumbers; var i: integer; begin for i := 1 to 10 do writeln(i); end.",
+    "program Factorial; var n, f, i: integer; begin n := 5; f := 1; for i := 1 to n do f := f * i; writeln(f); end.",
+    "program ReverseString; var s: string; begin s := 'Pascal'; writeln(copy(s, length(s), 1)); end."
+]
 
-    # Git add
-    subprocess.run(["git", "add", "."], check=True)
-
-    # Sana UTC formatda commitga beriladi
-    date_str = f"{current_date}T12:00:00"
+def get_commit_dates(year, activity_percent=70):
+    start_date = datetime.date(year, 1, 1)
+    end_date = datetime.date(year, 12, 31)
+    all_days = [(start_date + datetime.timedelta(days=i)) for i in range((end_date - start_date).days + 1)]
     
-    # Git uchun vaqt muhit o‘zgaruvchilarini sozlash
-    os.environ["GIT_AUTHOR_DATE"] = date_str
-    os.environ["GIT_COMMITTER_DATE"] = date_str
+    active_days = random.sample(all_days, int(len(all_days) * (activity_percent / 100)))
+    return sorted(active_days)
 
-    # Commit
-    subprocess.run(["git", "commit", "-m", f"Commit for {current_date}"], check=True)
+def generate_pascal_file(file_name):
+    code = random.choice(CODE_TEMPLATES)
+    with open(file_name, "w") as f:
+        f.write(code)
 
-    # Push
-    subprocess.run(["git", "push"], check=True)
+def commit_and_push(date, commit_count):
+    for _ in range(commit_count):
+        file_name = f"pascal/code_{date}_{random.randint(1, 100)}.pas"
+        generate_pascal_file(file_name)
 
-    current_date += datetime.timedelta(days=1)
+        os.system("git add .")
+        commit_date = date.strftime("%Y-%m-%dT%H:%M:%S")
+        os.system(f'git commit --date="{commit_date}" -m "Commit on {commit_date}"')
+
+    os.system("git push")
+
+def main():
+    year = 2024 
+    commit_dates = get_commit_dates(year)
+
+    for date in commit_dates:
+        commit_count = random.randint(3, 10)  
+        commit_and_push(date, commit_count)
+        print(f"✅ {date} uchun {commit_count} ta commit qilindi.")
+
+if __name__ == "__main__":
+    main()
