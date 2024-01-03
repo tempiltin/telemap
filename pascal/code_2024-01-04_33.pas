@@ -1,1 +1,1 @@
-program Factorial; var n, f, i: integer; begin n := 5; f := 1; for i := 1 to n do f := f * i; writeln(f); end.
+program SumTwoNumbers; var a, b: integer; begin a := 5; b := 10; writeln(a + b); end.
