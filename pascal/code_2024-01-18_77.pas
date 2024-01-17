@@ -1,1 +1,1 @@
-program PrintNumbers; var i: integer; begin for i := 1 to 10 do writeln(i); end.
+program HelloWorld; begin writeln('Hello, World!'); end.
