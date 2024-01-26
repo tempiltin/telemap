@@ -1,1 +1,1 @@
-program PrintNumbers; var i: integer; begin for i := 1 to 10 do writeln(i); end.
+program SumTwoNumbers; var a, b: integer; begin a := 5; b := 10; writeln(a + b); end.
