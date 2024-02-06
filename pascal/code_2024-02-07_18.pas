@@ -1,1 +1,1 @@
-program HelloWorld; begin writeln('Hello, World!'); end.
+program ReverseString; var s: string; begin s := 'Pascal'; writeln(copy(s, length(s), 1)); end.
