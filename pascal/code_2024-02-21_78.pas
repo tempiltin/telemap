@@ -1,1 +1,1 @@
-program ReverseString; var s: string; begin s := 'Pascal'; writeln(copy(s, length(s), 1)); end.
+program SumTwoNumbers; var a, b: integer; begin a := 5; b := 10; writeln(a + b); end.
