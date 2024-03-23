@@ -1,1 +1,1 @@
-program ReverseString; var s: string; begin s := 'Pascal'; writeln(copy(s, length(s), 1)); end.
+program PrintNumbers; var i: integer; begin for i := 1 to 10 do writeln(i); end.
