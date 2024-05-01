@@ -13,7 +13,7 @@ CODE_TEMPLATES = [
     "program ReverseString; var s: string; begin s := 'Pascal'; writeln(copy(s, length(s), 1)); end."
 ]
 
-def get_commit_dates(year, activity_percent=70):
+def get_commit_dates(year, activity_percent=100):
     start_date = datetime.date(year, 1, 1)
     end_date = datetime.date(year, 12, 31)
     all_days = [(start_date + datetime.timedelta(days=i)) for i in range((end_date - start_date).days + 1)]
