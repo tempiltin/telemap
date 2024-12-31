@@ -45,7 +45,7 @@ def main():
     commit_dates = get_full_active_dates()
 
     for date in commit_dates:
-        commit_count = random.randint(3, 10)
+        commit_count = random.randint(5, 20)
         commit_and_push(date, commit_count)
         print(f"✅ {date} kuni uchun {commit_count} ta commit bajarildi.")
 
