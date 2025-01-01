@@ -9,26 +9,25 @@ end_date = datetime.date(2025, 3, 31)
 # Har kun uchun commit va push
 current_date = start_date
 while current_date <= end_date:
-    # 1. README.md fayliga o‘zgarish kiritish
-    with open("README.md", "a") as f:
-        f.write(f"\nUpdate for {current_date}")
+    # Fayl yaratamiz (har xil nom bilan)
+    filename = f"daily_commit_{current_date}.txt"
+    with open(filename, "w") as f:
+        f.write(f"Commit for {current_date}")
 
-    # 2. git add .
+    # Git add
     subprocess.run(["git", "add", "."], check=True)
 
-    # 3. git commit -m "asd" (env bevosita funksiyada)
-    subprocess.run(
-        ["git", "commit", "-m", "asd"],
-        check=True,
-        env={**os.environ, "GIT_AUTHOR_DATE": f"{current_date}T12:00:00", "GIT_COMMITTER_DATE": f"{current_date}T12:00:00"}
-    )
+    # Sana UTC formatda commitga beriladi
+    date_str = f"{current_date}T12:00:00"
+    
+    # Git uchun vaqt muhit o‘zgaruvchilarini sozlash
+    os.environ["GIT_AUTHOR_DATE"] = date_str
+    os.environ["GIT_COMMITTER_DATE"] = date_str
 
-    # 4. git push (env bilan)
-    subprocess.run(
-        ["git", "push"],
-        check=True,
-        env={**os.environ, "GIT_AUTHOR_DATE": f"{current_date}T12:00:00", "GIT_COMMITTER_DATE": f"{current_date}T12:00:00"}
-    )
+    # Commit
+    subprocess.run(["git", "commit", "-m", f"Commit for {current_date}"], check=True)
 
-    # 5. Keyingi kunga o'tish
+    # Push
+    subprocess.run(["git", "push"], check=True)
+
     current_date += datetime.timedelta(days=1)
