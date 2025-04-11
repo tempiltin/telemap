@@ -2,9 +2,11 @@ import os
 import random
 import datetime
 
+# Pascal fayllari uchun papka
 if not os.path.exists("pascal"):
     os.makedirs("pascal")
 
+# Tasodifiy Pascal kod namunalar
 CODE_TEMPLATES = [
     "program HelloWorld; begin writeln('Hello, World!'); end.",
     "program SumTwoNumbers; var a, b: integer; begin a := 5; b := 10; writeln(a + b); end.",
@@ -13,22 +15,23 @@ CODE_TEMPLATES = [
     "program ReverseString; var s: string; begin s := 'Pascal'; writeln(copy(s, length(s), 1)); end."
 ]
 
-def get_commit_dates(year, activity_percent=100):
-    start_date = datetime.date(year, 1, 1)
-    end_date = datetime.date(year, 12, 31)
+# 2025 yil yanvar-mart oylari kunlarini olish
+def get_full_active_dates():
+    start_date = datetime.date(2025, 1, 1)
+    end_date = datetime.date(2025, 3, 31)
     all_days = [(start_date + datetime.timedelta(days=i)) for i in range((end_date - start_date).days + 1)]
-    
-    active_days = random.sample(all_days, int(len(all_days) * (activity_percent / 100)))
-    return sorted(active_days)
+    return all_days
 
+# Pascal faylini yaratish
 def generate_pascal_file(file_name):
     code = random.choice(CODE_TEMPLATES)
     with open(file_name, "w") as f:
         f.write(code)
 
+# Git commit va push
 def commit_and_push(date, commit_count):
     for _ in range(commit_count):
-        file_name = f"pascal/code_{date}_{random.randint(1, 100)}.pas"
+        file_name = f"pascal/code_{date}_{random.randint(1, 10000)}.pas"
         generate_pascal_file(file_name)
 
         os.system("git add .")
@@ -37,14 +40,14 @@ def commit_and_push(date, commit_count):
 
     os.system("git push")
 
+# Asosiy funksiya
 def main():
-    year = 2024 
-    commit_dates = get_commit_dates(year)
+    commit_dates = get_full_active_dates()
 
     for date in commit_dates:
-        commit_count = random.randint(3, 10)  
+        commit_count = random.randint(3, 10)
         commit_and_push(date, commit_count)
-        print(f"✅ {date} uchun {commit_count} ta commit qilindi.")
+        print(f"✅ {date} kuni uchun {commit_count} ta commit bajarildi.")
 
 if __name__ == "__main__":
     main()
